@@ -3,7 +3,11 @@
 import { useRef, useState } from 'react';
 import { Plus, X } from 'lucide-react';
 
-export default function CreateNoteBtn() {
+interface CreateNoteBtnProps {
+    onNoteCreated: () => void;
+}
+
+export default function CreateNoteBtn({ onNoteCreated }: CreateNoteBtnProps) {
     const [isOpen, setIsOpen] = useState(false);
     const titleRef = useRef<HTMLInputElement>(null);
     const contentRef = useRef<HTMLTextAreaElement>(null);
@@ -12,7 +16,14 @@ export default function CreateNoteBtn() {
         const title = titleRef.current?.value || "";
         const content = contentRef.current?.value || "";
 
-        console.log(title, content)
+        await fetch('http://localhost:3000/api/note', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, content }),
+        });
+
+        setIsOpen(false);
+        onNoteCreated(); // Gọi hàm callback để reload note
     }
 
     return (
@@ -25,52 +36,38 @@ export default function CreateNoteBtn() {
             </button>
 
             {isOpen && (
-                <div className="fixed inset-0 bg-black opacity-70 flex items-center justify-center z-40">
+                <>
+                    <div className="fixed inset-0 bg-black opacity-70 z-40"></div>
 
-                </div>
-            )}
-
-            {isOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-45">
-
-                    <div className="bg-white p-6 rounded-xl shadow-lg w-96 relative z-50">
-                        <button
-                            className="absolute top-2 right-2 text-gray-500 hover:text-black"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            <X size={20} />
-                        </button>
-
-                        <h2 className="text-xl font-bold mb-4">Create New Note</h2>
-                        <form className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Title</label>
-                                <input
-                                    ref={titleRef}
-                                    name='title'
-                                    type="text"
-                                    className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Message</label>
-                                <textarea
-                                    ref={contentRef}
-                                    name='message'
-                                    rows={4}
-                                    className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                ></textarea>
-                            </div>
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="bg-white p-6 rounded-xl shadow-lg w-96 relative">
                             <button
-                                type='button'
-                                onClick={CreateNewNote}
-                                className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition cursor-pointer"
+                                className="absolute top-2 right-2"
+                                onClick={() => setIsOpen(false)}
                             >
-                                Create
+                                <X size={20} />
                             </button>
-                        </form>
+                            <h2 className="text-xl font-bold mb-4">Create New Note</h2>
+                            <form className="space-y-4">
+                                <div>
+                                    <label className="block text-sm">Title</label>
+                                    <input ref={titleRef} className="w-full border border-indigo-900/50 rounded p-2" />
+                                </div>
+                                <div>
+                                    <label className="block text-sm">Message</label>
+                                    <textarea ref={contentRef} rows={4} className="w-full border border-indigo-900/50 rounded p-2" />
+                                </div>
+                                <button
+                                    type='button'
+                                    onClick={CreateNewNote}
+                                    className="w-full bg-blue-500 text-white py-2 rounded cursor-pointer"
+                                >
+                                    Create
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                </>
             )}
         </>
     );
