@@ -25,7 +25,7 @@ export class NoteRepository {
         });
     }
 
-    static async updateNote(id: number, title: string, content: string) {
+    static async updateNote(id: string, title: string, content: string) {
         return await this.withConnection(async (conn) => {
             const [result] = await conn.query(
                 `UPDATE notes SET title = ?, content = ? WHERE id = ?`,
@@ -49,6 +49,16 @@ export class NoteRepository {
         return await this.withConnection(async (conn) => {
             const [results] = await conn.query(
                 'SELECT * FROM notes'
+            )
+            return results
+        })
+    }
+
+    static async deleteNote(id: string) {
+        return await this.withConnection(async (conn) => {
+            const [results] = await conn.query(
+                'DELETE note where id = ?',
+                [id]
             )
             return results
         })

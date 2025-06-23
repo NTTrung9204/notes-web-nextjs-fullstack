@@ -3,7 +3,7 @@ import { redisServices } from "../services/redis.services";
 
 
 export const redisClient = createClient({
-    url: "redis://localhost:6379"
+    url: `redis://redis:${process.env.REDIS_PORT}`
 })
 
 export async function connectRedis() {

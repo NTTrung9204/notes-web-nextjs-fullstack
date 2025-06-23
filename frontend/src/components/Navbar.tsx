@@ -15,6 +15,7 @@ export default function Navbar() {
                 </li>
                 <NavbarItem text="HOME" href="/" isActive={pathname === "/"} />
                 <NavbarItem text="NOTES" href="/notes" isActive={pathname === "/notes"} />
+                <NavbarItem text="REDIS" href="/redis-admin" isActive={pathname === "/redis-admin"} />
             </ul>
             <ul className="mr-12 flex items-center gap-8 font-bold">
                 <NavbarItem text="LOGIN" href="/login" isActive={pathname === "/login"} />
