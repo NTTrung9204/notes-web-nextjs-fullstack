@@ -48,6 +48,4 @@ export class redisRepositories {
     static async delete(key: string) {
         return await redisClient.del(key)
     }
-
-    static async create(key)
 }

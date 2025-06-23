@@ -4,7 +4,7 @@ import express from 'express';
 const router = express.Router()
 
 router.get('/', redisController.getAll)
-router.post('/', redisController.)
+router.post('/', redisController.create)
 router.get('/:key', redisController.getOne)
 router.patch('/:key', redisController.update)
 router.delete('/:key', redisController.delete)

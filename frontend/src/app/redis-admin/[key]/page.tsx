@@ -13,12 +13,12 @@ export default function RedisDetailPage() {
   useEffect(() => {
     const fetchKeyValue = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/redis/${encodeURIComponent(key)}`);
+        const res = await fetch(`http://localhost:3030/api/redis/${encodeURIComponent(key)}`);
         if (!res.ok) {
           throw new Error(`Error fetching data: ${res.statusText}`);
         }
         const data = await res.json();
-        
+
         if (data.value !== null && typeof data.value === 'object') {
           setValue(JSON.stringify(data.value, null, 2));
           setOriginalValueType('object');
@@ -42,7 +42,7 @@ export default function RedisDetailPage() {
 
     if (originalValueType === 'object') {
       try {
-        valueToSave = JSON.parse(value); 
+        valueToSave = JSON.parse(value);
       } catch (e) {
         console.log('Invalid JSON format. Please correct it before saving as an object.', e);
         return;
@@ -50,7 +50,7 @@ export default function RedisDetailPage() {
     }
 
     try {
-      const res = await fetch(`http://localhost:3000/api/redis/${encodeURIComponent(key)}`, {
+      const res = await fetch(`http://localhost:3030/api/redis/${encodeURIComponent(key)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: valueToSave }),
@@ -71,7 +71,7 @@ export default function RedisDetailPage() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:3000/api/redis/${encodeURIComponent(key)}`, {
+      const res = await fetch(`http://localhost:3030/api/redis/${encodeURIComponent(key)}`, {
         method: 'DELETE',
       });
 

@@ -3,27 +3,27 @@
 import { useRef, useState } from 'react';
 import { Plus, X } from 'lucide-react';
 
-interface CreateNoteBtnProps {
-    onNoteCreated: () => void;
+interface CreateKeyValueRedisBtnProps {
+    onKeyValueCreated: () => void;
 }
 
-export default function CreateNoteBtn({ onNoteCreated }: CreateNoteBtnProps) {
+export default function CreateKeyValueRedisBtn({ onKeyValueCreated }: CreateKeyValueRedisBtnProps) {
     const [isOpen, setIsOpen] = useState(false);
-    const titleRef = useRef<HTMLInputElement>(null);
-    const contentRef = useRef<HTMLTextAreaElement>(null);
+    const keyRef = useRef<HTMLInputElement>(null);
+    const valueRef = useRef<HTMLInputElement>(null);
 
-    async function CreateNewNote() {
-        const title = titleRef.current?.value || "";
-        const content = contentRef.current?.value || "";
+    async function CreateNewKeyValue() {
+        const key = keyRef.current?.value || "";
+        const value = valueRef.current?.value || "";
 
-        await fetch('http://localhost:3030/api/note', {
+        await fetch('http://localhost:3030/api/redis', {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, content }),
+            body: JSON.stringify({ key, value }),
         });
 
         setIsOpen(false);
-        onNoteCreated();
+        onKeyValueCreated();
     }
 
     return (
@@ -50,16 +50,16 @@ export default function CreateNoteBtn({ onNoteCreated }: CreateNoteBtnProps) {
                             <h2 className="text-xl font-bold mb-4">Create New Note</h2>
                             <form className="space-y-4">
                                 <div>
-                                    <label className="block text-sm">Title</label>
-                                    <input ref={titleRef} className="w-full border border-indigo-900/50 rounded p-2" />
+                                    <label className="block text-sm">Key</label>
+                                    <input ref={keyRef} className="w-full border border-indigo-900/50 rounded p-2" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm">Message</label>
-                                    <textarea ref={contentRef} rows={4} className="w-full border border-indigo-900/50 rounded p-2" />
+                                    <label className="block text-sm">Value</label>
+                                    <input ref={valueRef} className="w-full border border-indigo-900/50 rounded p-2" />
                                 </div>
                                 <button
                                     type='button'
-                                    onClick={CreateNewNote}
+                                    onClick={CreateNewKeyValue}
                                     className="w-full bg-blue-500 text-white py-2 rounded cursor-pointer"
                                 >
                                     Create

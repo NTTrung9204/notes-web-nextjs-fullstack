@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import CreateKeyValueRedisBtn from '@/components/ui/CreateKeyValueRedisBtn';
 
 interface RedisItem {
   [key: string]: string | null;
@@ -10,8 +11,8 @@ interface RedisItem {
 export default function RedisAdminPage() {
   const [data, setData] = useState<RedisItem[]>([]);
 
-  useEffect(() => {
-    fetch('http://localhost:3000/api/redis')
+  async function fetchData() {
+    fetch('http://localhost:3030/api/redis')
       .then((res) => res.json())
       .then((apiData) => {
         console.log(apiData.items)
@@ -19,8 +20,12 @@ export default function RedisAdminPage() {
       })
       .catch((error) => {
         console.error('Failed to fetch Redis data:', error);
-        setData([]); 
+        setData([]);
       });
+  }
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (
@@ -28,7 +33,7 @@ export default function RedisAdminPage() {
       <h1 className="text-2xl font-bold mb-4">Redis Key-Value List</h1>
       <table className="w-full table-auto border border-gray-300">
         <thead className="bg-gray-100">
-          <tr>
+          <tr className="text-left bg-blue-300">
             <th className="border px-4 py-2 text-left">Key</th>
             <th className="border px-4 py-2 text-left">Value</th>
           </tr>
@@ -39,7 +44,7 @@ export default function RedisAdminPage() {
             const value = item[key];
             return (
               <tr key={key || `item-${index}`} className="hover:bg-gray-50">
-                <td className="border px-4 py-2 text-blue-600 underline">
+                <td className="border px-4 py-2 text-blue-600">
                   <Link href={`/redis-admin/${encodeURIComponent(key)}`}>{key}</Link>
                 </td>
                 <td className="border px-4 py-2">
@@ -59,6 +64,8 @@ export default function RedisAdminPage() {
           )}
         </tbody>
       </table>
+
+      <CreateKeyValueRedisBtn onKeyValueCreated={fetchData} />
     </div>
   );
 }

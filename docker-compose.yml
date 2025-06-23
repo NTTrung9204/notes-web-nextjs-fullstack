@@ -9,24 +9,38 @@ services:
       MYSQL_DATABASE: aiot            
       MYSQL_USER: admin                   
       MYSQL_PASSWORD: admin           
-    ports:
-      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-    networks:
-      - app-network
 
   redis:
-    image: redis:latest
+    image: redis:alpine
     container_name: my-redis-cache
+
+  backend:
+    build:
+      context: ./backend
     ports:
-      - "6379:6379"
-    networks:
-      - app-network
+      - "3030:3030"
+    environment:
+      PORT: 3030
+      SQL_HOST: mysql
+      SQL_PORT: 3306
+      SQL_USER: admin
+      SQL_PASSWORD: admin   
+      SQL_DATABASE: aiot   
+      REDIS_PORT: 6379
+      FRONTEND_PORT: 3333
+    depends_on:
+      - mysql
+      - redis
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3333:3000"
+    depends_on:
+      - backend
 
 volumes:
   mysql_data:
-
-networks:
-  app-network:
-    driver: bridge
