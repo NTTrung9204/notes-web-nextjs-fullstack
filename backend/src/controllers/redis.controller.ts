@@ -27,7 +27,7 @@ export class redisController {
 
         console.log(key, newValue)
 
-        const result = await redisServices.setNewValue(key, newValue)
+        const result = await redisServices.setValue(key, newValue)
 
         res.status(200).send({
             result
@@ -49,6 +49,10 @@ export class redisController {
     static async create(req: Request, res: Response) {
         const {key, value} = req.body
 
-        
+        const result = await redisServices.setValue(key, value)
+
+        res.status(200).send({
+            result
+        }) 
     }
 }

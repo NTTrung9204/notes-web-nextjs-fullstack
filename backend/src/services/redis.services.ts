@@ -7,8 +7,12 @@ export class redisServices {
     static async initRedis() {
         const visitorCounter: string | null = await redisRepositories.get('visitorCounter')
         if (!visitorCounter) {
-            await redisRepositories.set("visitorCounter", this.defaultCounterValue)
-            return this.defaultCounterValue
+            const counterDB = String(await counterService.getVisiter())
+
+            console.log("counterDB", counterDB)
+
+            await redisRepositories.set("visitorCounter", counterDB)
+            return counterDB
         }
         else {
             console.log("Visiter counter is really exist:", visitorCounter)
@@ -37,7 +41,10 @@ export class redisServices {
         return await redisRepositories.get(key)
     }
 
-    static async setNewValue(key: string, value: string) {
+    static async setValue(key: string, value: string) {
+        if(key === "visitorCounter") {
+            await counterService.setVisiter(Number(value))
+        }
         return await redisRepositories.set(key, value)
     }
 

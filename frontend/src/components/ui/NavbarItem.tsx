@@ -8,11 +8,11 @@ type NavbarItemProps = {
 
 export default function NavbarItem({ text, href = "/", isActive }: NavbarItemProps) {
     return (
-        <li className="relative group cursor-pointer px-2 py-1 text-black">
-            <Link href={href}>
+        <Link href={href}>
+            <li className="relative group cursor-pointer px-4 py-2 text-black">
                 {text}
-            </Link>
-            <span className={`absolute ${isActive? "w-full left-0" : "w-0 left-1/2"} bottom-0 h-[2px] bg-amber-950 transition-all duration-300 group-hover:left-0 group-hover:w-full`} />
-        </li>
+                <span className={`absolute ${isActive ? "w-full left-0" : "w-0 left-1/2"} bottom-0 h-[2px] bg-amber-950 transition-all duration-300 group-hover:left-0 group-hover:w-full`} />
+            </li>
+        </Link>
     );
 }
