@@ -3,7 +3,8 @@ import { notesController } from '../controllers/notes.controller';
 
 const router = express.Router()
 
-router.get('/', notesController.get)
-// router.post('/', notesController.create)
+router.get('/', notesController.getAll)
+router.get('/:id', notesController.getOne)
+router.post('/', notesController.create)
 
 export { router }

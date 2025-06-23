@@ -5,6 +5,7 @@ export const db = mysql.createPool({
     user: 'admin',
     password: 'admin',
     database: 'aiot',
+    port: 3307,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
