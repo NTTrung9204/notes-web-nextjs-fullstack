@@ -4,7 +4,7 @@ import path from 'path';
 
 export async function migrateDB() {
   try {
-    const filePath = path.join(__dirname, 'sql/002_create_notes.sql');
+    const filePath = path.join(__dirname, 'sql/003_create_counter.sql');
     console.log(filePath)
     const sql = await fs.readFile(filePath, 'utf-8');
     const connection = await db.getConnection();
